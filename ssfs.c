@@ -354,59 +354,6 @@ static int _write(const char *path, const char *buf, size_t size, off_t offset, 
   return res;
 }
 
-// static int _fsyncdir(const char *path, int isdatasync, struct fuse_file_info *fi) {
-//   char fpath[1000], fileName1[100], fileName2[100];
-//   int n, m, res;
-//
-//   sprintf(fpath, "%s%s", fs, path);
-//   sprintf(fileName1, "%s", path);
-//   sprintf(fileName2, "sync_%s", path);
-//
-//   DIR *d = opendir(fpath);
-//   DIR *d1 = opendir(fileName1);
-//   DIR *d2 = opendir(fileName2);
-//   struct tm *foo1, *foo2;
-//   struct stat attrib1, attrib2;
-//   struct dirent *de, *di1, *di2;
-//   struct dirent **namelist1, **namelist2;
-//
-//   while((de = readdir(d))) {
-//     if (!strcmp(fileName1, de->d_name) && !strcmp(fileName2, de->d_name)) {
-//       if (((di1 = readdir(d1))) && ((di2 = readdir(d2)))) {
-//         n = scandir(fileName1, &namelist1, NULL, alphasort);
-//         m = scandir(fileName2, &namelist2, NULL, alphasort);
-//         if (n == m) {
-//           while (n--) {
-//             if (strcmp(di1->d_name, di2->d_name) != 0) break;
-//
-//             stat(di1->d_name, &attrib1);
-//             stat(di2->d_name, &attrib2);
-//             foo1 = gmtime(&(attrib1.st_mtime));
-//             foo2 = gmtime(&(attrib2.st_mtime));
-//             res = foo1->tm_min - foo2->tm_min;
-//             if (res > 0.1) break;
-//
-//             FILE *fp = fopen(fileName1, "wb");
-//       fprintf(fp, "%s\n", fileName1);
-//             fsync(fileno(fp));
-//
-//             FILE *fd = fopen(fileName2, "wb");
-//       fprintf(fd, "%s\n", fileName2);
-//             fsync(fileno(fd));
-//
-//             fclose(fp);
-//             fclose(fd);
-//           }
-//         }
-//         closedir(d1);
-//         closedir(d2);
-//       }
-//     }
-//   }
-//   return 0;
-// }
-
-
 static struct fuse_operations _oper = {
   .getattr = _getattr,
   .readdir = _readdir,
@@ -420,7 +367,6 @@ static struct fuse_operations _oper = {
   .open = _open,
   .read = _read,
   .write = _write,
-  // .fsyncdir = _fsyncdir,
 };
 
 int main(int argc, char *argv[]) {
